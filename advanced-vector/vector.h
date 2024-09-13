@@ -21,14 +21,10 @@ public:
     RawMemory(const RawMemory&) = delete;
     RawMemory& operator=(const RawMemory& rhs) = delete;
     RawMemory(RawMemory&& other) noexcept {
-        buffer_ = nullptr;
-        capacity_ = 0;
         Swap(other);
     }
     RawMemory& operator=(RawMemory&& rhs) noexcept {
         if (rhs.buffer_ != buffer_) {
-            buffer_ = nullptr;
-            capacity_ = 0;
             Swap(rhs);
         }
         return *this;
@@ -298,7 +294,7 @@ public:
     }
     
     iterator Erase(const_iterator pos) {
-        assert(pos >= begin() && pos <= end());
+        assert(pos >= begin() && pos < end());
         size_t index = static_cast<size_t>(pos - begin());
         std::move(begin() + index + 1, end(), begin() + index);
         std::destroy_at(end());
